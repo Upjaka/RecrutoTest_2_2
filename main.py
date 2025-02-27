@@ -54,21 +54,9 @@ async def login(username: str = Form(...), password: str = Form(...)):
 async def get_code(request: Request):
     session_id = request.cookies.get("session")
     if session_id and session_id in sessions:
-        # Получаем код и удаляем сессию (после этого обновление страницы приведет к повторной авторизации)
-        code = sessions.pop(session_id)
-        response = HTMLResponse(f"""
-            <html>
-              <head>
-                <title>Сгенерированный код</title>
-              </head>
-              <body>
-                <h1>Ваш код: {code}</h1>
-                <p>Обновление страницы приведёт к выходу из системы.</p>
-              </body>
-            </html>
-        """)
-        response.delete_cookie("session")
-        return response
+
+        code = f"{random.randint(1, 9999):04d}"
+        return {"code": code}
     else:
         # Если сессия недействительна, перенаправляем на форму авторизации
         return RedirectResponse(url="/")
