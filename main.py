@@ -56,7 +56,19 @@ async def get_code(request: Request):
     if session_id and session_id in sessions:
 
         code = f"{random.randint(1, 9999):04d}"
-        return {"code": code}
+        response = HTMLResponse(f"""
+            <html>
+              <head>
+                <title>Сгенерированный код</title>
+              </head>
+              <body>
+                <h1>Ваш код: {code}</h1>
+                <p>Обновление страницы приведёт к выходу из системы.</p>
+              </body>
+            </html>
+        """)
+        response.delete_cookie("session")
+        return response
     else:
         # Если сессия недействительна, перенаправляем на форму авторизации
         return RedirectResponse(url="/")
