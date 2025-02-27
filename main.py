@@ -72,3 +72,9 @@ async def get_code(request: Request):
     else:
         # Если сессия недействительна, перенаправляем на форму авторизации
         return RedirectResponse(url="/")
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
